@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>League Challenge Tracker</title>
+    <style>
+        body {
+            background-color: #777777;
+        }
+        table, th, td {
+            border: 3px solid black;
+            border-collapse: collapse;
+            text-align: center;
+        }
+        th, td {
+            width: auto;
+            padding-left: 5px;
+            padding-right: 5px;
+            height: 20px;
+            font-weight: bold;
+        }
+
+        .yes {
+            background-color: green;
+        }
+
+        .no {
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <input type="checkbox" id="simpleinput" checked="true">
+        Simple Names
+    </div>
+    <table id="champtable">
+        <tr id="headers">
+            <th></th>
+        </tr>
+    </table>
+</body>
+<script>
+    const DATA = /*REPLACE THIS WITH DATA*/;
+
+    const tableElements = document.getElementById("headers");
+    const champTable = document.getElementById("champtable");
+    const simpleInput = document.getElementById("simpleinput");
+
+    simpleInput.addEventListener("change", (e) => {
+        for (var i = 0; i < DATA.categories.length; i++) {
+            const labl = document.getElementById(`CHAL_${i}_NAME`);
+            if (simpleInput.checked) {
+                labl.innerHTML = DATA.categories[i].simple;
+            } else {
+                labl.innerHTML = DATA.categories[i].name;
+            }
+        }
+    });
+
+    const el = document.createElement("tr");
+    el.style = ""
+    const el2 = document.createElement("td");
+    el2.innerHTML = "Total";
+    el.appendChild(el2);
+    for (var i = 0; i < DATA.categories.length; i++) {
+        const el3 = document.createElement("td");
+        el3.innerHTML = DATA.categories[i].completed.length;
+        el.appendChild(el3);
+    }
+    champTable.append(el);
+
+    for (var i = 0; i < DATA.categories.length; i++) {
+        const el = document.createElement("th");
+        const el2 = document.createElement("label");
+        el2.id = `CHAL_${i}_NAME`;
+        el2.innerHTML = DATA.categories[i].simple;
+        el2.title = DATA.categories[i].name + "\n\n" + DATA.categories[i].description;
+        el.appendChild(el2);
+        tableElements.appendChild(el);
+    }
+
+    for (var i = 0; i < DATA.champs.length; i++) {  
+        const el = document.createElement("tr");
+        el.id = DATA.champs[i].key;
+        const el3 = document.createElement("td");
+        el3.innerHTML = DATA.champs[i].name;
+        el.appendChild(el3);
+        for (var j = 0; j < DATA.categories.length; j++) {
+            const el2 = document.createElement("td");
+            el2.className = "no";
+            for (var k = 0; k < DATA.categories[j].completed.length; k++) {
+                if (DATA.categories[j].completed[k] == DATA.champs[i].key) {
+                    el2.className = "yes";
+                }
+            }
+            el.appendChild(el2);
+        }
+        champTable.appendChild(el);
+    }
+
+
+
+</script>
+</html>
